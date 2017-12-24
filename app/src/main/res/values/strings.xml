@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MxEasy</string>
+    <string name="search">Search</string>
+    <string name="type_a_query">Type a query for Maximo</string>
+    <string name="enter_ponum">Enter a Maximo PO Number</string>
+    <string name="url_display">Enter a search query and URL will display here</string>
+    <string name="error_message">Failed to get results, please try again</string>
+</resources>
