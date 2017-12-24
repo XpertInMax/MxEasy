@@ -2,27 +2,28 @@ package com.gaf.android.mxeasy;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 import com.gaf.android.mxeasy.maximoobjects.PO;
-import com.gaf.android.mxeasy.utilities.MxObjectAdapter;
+import com.gaf.android.mxeasy.utilities.MaximoObjectAdapter;
+import com.gaf.android.mxeasy.utilities.MaximoObjectAdapter.MaximoObjectAdapterOnClickHandler;
 import com.gaf.android.mxeasy.utilities.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MaximoObjectAdapterOnClickHandler {
 
     private static final String LOG_TAG = MainActivity.class.getName();
 
@@ -30,15 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mUrlDisplayTextView;
 
-    private TextView mSearchResults;
-
     private TextView mErrorMessageDisplay;
 
     private ProgressBar mProgressBar;
 
-    private ListView mListView;
+    private MaximoObjectAdapter maximoObjectAdapter;
 
-    private MxObjectAdapter mxObjectAdapter;
+    private RecyclerView mRecyclerViewMBOList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +46,42 @@ public class MainActivity extends AppCompatActivity {
 
         Log.v(LOG_TAG, "On Create() Called");
 
+        mRecyclerViewMBOList = (RecyclerView) findViewById(R.id.recyclerview_mboList);
+
         mSearchBoxEditorText = (EditText) findViewById(R.id.mx_search_box);
 
         mUrlDisplayTextView = (TextView) findViewById(R.id.mx_url_display);
-
-        //mSearchResults = (TextView) findViewById(R.id.mxSearchResultsJson);
 
         mErrorMessageDisplay = (TextView) findViewById(R.id.mxErrorMsgDisplay);
 
         mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        mListView = (ListView) findViewById(R.id.maximoList);
 
+        /*
+         * LinearLayoutManager can support HORIZONTAL or VERTICAL orientations. The reverse layout
+         * parameter is useful mostly for HORIZONTAL layouts that should reverse for right to left
+         * languages.
+         */
+        boolean shouldReverseLayout = false;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, shouldReverseLayout);
+        mRecyclerViewMBOList.setLayoutManager(linearLayoutManager);
+
+        /*
+         * Use this setting to improve performance if you know that changes in content do not
+         * change the child layout size in the RecyclerView
+         */
+        mRecyclerViewMBOList.setHasFixedSize(true);
+
+         /*
+         * The ForecastAdapter is responsible for linking our weather data with the Views that
+         * will end up displaying our weather data.
+         */
         // Create a new adapter that takes an empty list of earthquakes as input
-        mxObjectAdapter = new MxObjectAdapter(this, new ArrayList<PO>());
+        maximoObjectAdapter = new MaximoObjectAdapter(this);
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        mListView.setAdapter(mxObjectAdapter);
+        mRecyclerViewMBOList.setAdapter(maximoObjectAdapter);
 
 
     }
@@ -97,13 +114,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showJsonDataView(){
-        mListView.setVisibility(View.VISIBLE);
+        mRecyclerViewMBOList.setVisibility(View.VISIBLE);
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
     }
 
     private void showErrorMessage(){
-        mListView.setVisibility(View.INVISIBLE);
+        mRecyclerViewMBOList.setVisibility(View.INVISIBLE);
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(PO po) {
+
     }
 
 
@@ -149,14 +171,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<PO> data) {
            mProgressBar.setVisibility(View.INVISIBLE);
-            // Clear the adapter of previous earthquake data
-            mxObjectAdapter.clear();
-
             // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
             // data set. This will trigger the ListView to update.
             if (data != null && !data.isEmpty()) {
-                mxObjectAdapter.addAll(data);
                 showJsonDataView();
+                maximoObjectAdapter.setMaixmoPOData(data);
             }else {
                 showErrorMessage();
             }

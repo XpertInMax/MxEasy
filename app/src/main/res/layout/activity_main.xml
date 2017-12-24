@@ -6,32 +6,23 @@
     android:layout_height="match_parent"
     tools:context="com.gaf.android.mxeasy.MainActivity">
 
-    <ProgressBar
-        android:id="@+id/pb_loading_indicator"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:layout_gravity="center"
-        app:layout_constraintTop_toTopOf="@+id/mx_frame_result"
-        tools:layout_editor_absoluteX="155dp" />
-
     <TextView
         android:id="@+id/mxErrorMsgDisplay"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:padding="16dp"
         android:text="@string/error_message"
         android:textSize="22sp"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@+id/pb_loading_indicator" />
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@+id/mx_url_display" />
 
     <EditText
         android:id="@+id/mx_search_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/enter_ponum"
@@ -60,8 +51,6 @@
         android:id="@+id/mx_url_display"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textSize="22sp"
         app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
@@ -69,27 +58,30 @@
         app:layout_constraintTop_toBottomOf="@+id/mx_search_box"
         tools:text="@string/url_display" />
 
-    <ListView
-        android:id="@+id/maximoList"
-        style="@style/Widget.AppCompat.ListView"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_mboList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:divider="@android:color/holo_blue_dark"
-        android:dividerHeight="1dp"
-        android:scrollbars="vertical"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@+id/mx_url_display">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@+id/mx_url_display" />
-
-    <FrameLayout
-        android:id="@+id/mx_frame_result"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
-        app:layout_constraintStart_toEndOf="@+id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@+id/mx_url_display">
-
-    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

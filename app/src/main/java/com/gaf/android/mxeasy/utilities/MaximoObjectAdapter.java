@@ -91,7 +91,7 @@ public class MaximoObjectAdapter extends RecyclerView.Adapter<MaximoObjectAdapte
      * This method simply returns the number of items to display. It is used behind the scenes
      * to help layout our Views and for animations.
      *
-     * @return The number of items available in our forecast
+     * @return The number of PO available in our ArrayList
      */
     @Override
     public int getItemCount() {
@@ -99,6 +99,18 @@ public class MaximoObjectAdapter extends RecyclerView.Adapter<MaximoObjectAdapte
             return 0;
         }
         return mMaximoPOList.size();
+    }
+
+    /**
+     * This method is used to set the weather forecast on a MaximoObjectAdapter if we've already
+     * created one. This is handy when we get new data from the web but don't want to create a
+     * new MaximoObjectAdapter to display it.
+     *
+     * @param poArrayList The new weather data to be displayed.
+     */
+    public void setMaixmoPOData(ArrayList<PO> poArrayList) {
+        mMaximoPOList = poArrayList;
+        notifyDataSetChanged();
     }
 
     public class MaximoObjectAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
